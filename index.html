@@ -3,9 +3,122 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <script src="./src/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
     <title>Project Reddit</title>
   </head>
   <body>
-    <script src="main.js"></script>
+    <div class="container" id="content-container">
+      <header>
+        <div class="row text-center">
+          <h1>ReReddit</h1>
+        </div>
+      </header>
+
+      <article>
+        <section class="row mb-4" id="posts">
+          <div class="column" id="posts-inner">
+            <div
+              class="row justify-content-center align-items-start g-2 post"
+              data-postid="123uniqueid"
+            >
+              <div class="col-sm-1 m-0 post-icon">
+                <div class="d-flex justify-content-center">
+                  <i class="bi bi-person-circle h1 m-0"></i>
+                </div>
+                <!-- TODO: fix vertical line so that it's responsive -->
+                <div class="d-flex justify-content-center py-1">
+                  <div class="vertical-line"></div>
+                </div>
+              </div>
+              <div class="col-sm-11 post-contents">
+                <div class="row post-header">
+                  <h3><strong> User Name</strong></h3>
+                </div>
+                <div class="row post-text">
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Consequatur consectetur ullam id neque nihil voluptates
+                    animi, quos deserunt quisquam cumque est odit optio suscipit
+                    veniam mollitia atque similique, Lorem ipsum dolor sit amet
+                    consectetur adipisicing elit.
+                  </p>
+                </div>
+                <div class="row post-options">
+                  <div class="col-1 d-flex">
+                    <button
+                      type="button"
+                      class="like-btn bg-like m-1 d-flex justify-content-center align-items-center"
+                    >
+                      <i class="bi bi-hand-thumbs-up-fill"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="like-btn bg-dislike m-1 d-flex justify-content-center align-items-center"
+                    >
+                      <i class="bi bi-hand-thumbs-down-fill"></i>
+                    </button>
+                  </div>
+                  <div class="col-2 d-flex align-items-center">
+                    <button type="button" class="btn btn-secondary comment-btn">
+                      Comment
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 comment-form d-flex justify-content-center">
+                <div class="col-1"></div>
+                <div class="col-11">
+                  <form class="form w-75">
+                    <div class="form-group mb-2">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="name"
+                      />
+                    </div>
+                    <div class="form-group mb-2">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Post"
+                      />
+                    </div>
+                    <button id="submit" class="btn btn-primary">Post</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="row" id="post-form">
+          <div class="col-12 post-form-header">
+            <h2>Create a post</h2>
+          </div>
+          <div class="col-12">
+            <form class="form">
+              <div class="form-group mb-2">
+                <input type="text" class="form-control" placeholder="name" />
+              </div>
+              <div class="form-group mb-2">
+                <input type="text" class="form-control" placeholder="Post" />
+              </div>
+              <button id="submit" class="btn btn-primary">Post</button>
+            </form>
+          </div>
+        </section>
+      </article>
+    </div>
+    <script type="module" src="main.js"></script>
   </body>
 </html>
