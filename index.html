@@ -32,54 +32,66 @@
               class="row justify-content-center align-items-start g-2 post"
               data-postid="123uniqueid"
             >
-              <div class="col-sm-1 m-0 post-icon">
-                <div class="d-flex justify-content-center">
+              <div
+                class="parent d-flex justify-content-between col-sm-12 m-0 post-icon"
+              >
+                <div class="d-flex flex-column">
                   <i class="bi bi-person-circle h1 m-0"></i>
+                  <div class="vertical-line mx-auto"></div>
                 </div>
-                <!-- TODO: fix vertical line so that it's responsive -->
-                <div class="d-flex justify-content-center py-1">
-                  <div class="vertical-line"></div>
+
+                <div class="col-sm-11 post-contents">
+                  <div class="row post-header">
+                    <h3><strong> User Name</strong></h3>
+                  </div>
+                  <div class="row post-text">
+                    <p>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Consequatur consectetur ullam id neque nihil voluptates
+                      animi, quos deserunt quisquam cumque est odit optio
+                      suscipit veniam mollitia atque similique, Lorem ipsum
+                      dolor sit amet consectetur adipisicing elit.
+                    </p>
+                  </div>
+                  <div class="row post-options justify-content-between">
+                    <div class="col-4 col-sm-3 col-md-2 d-flex">
+                      <button
+                        type="button"
+                        class="like-btn bg-like m-1 p-0 d-flex justify-content-center align-items-center"
+                        data-type="like"
+                        aria-label="post like button"
+                      >
+                        <i class="bi bi-hand-thumbs-up-fill"></i>
+                      </button>
+                      <div class="like-counter">0</div>
+                      <button
+                        type="button"
+                        class="like-btn bg-dislike m-1 p-0 d-flex justify-content-center align-items-center"
+                        data-type="dislike"
+                        aria-label="post dislike button"
+                      >
+                        <i class="bi bi-hand-thumbs-down-fill"></i>
+                      </button>
+                    </div>
+                    <div
+                      class="col-5 col-sm-9 d-flex align-items-center justify-content-start"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-secondary comment-btn"
+                        aria-label="add comment button"
+                      >
+                        Comment
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-sm-11 post-contents">
-                <div class="row post-header">
-                  <h3><strong> User Name</strong></h3>
-                </div>
-                <div class="row post-text">
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Consequatur consectetur ullam id neque nihil voluptates
-                    animi, quos deserunt quisquam cumque est odit optio suscipit
-                    veniam mollitia atque similique, Lorem ipsum dolor sit amet
-                    consectetur adipisicing elit.
-                  </p>
-                </div>
-                <div class="row post-options">
-                  <div class="col-1 d-flex">
-                    <button
-                      type="button"
-                      class="like-btn bg-like m-1 d-flex justify-content-center align-items-center"
-                    >
-                      <i class="bi bi-hand-thumbs-up-fill"></i>
-                    </button>
-                    <button
-                      type="button"
-                      class="like-btn bg-dislike m-1 d-flex justify-content-center align-items-center"
-                    >
-                      <i class="bi bi-hand-thumbs-down-fill"></i>
-                    </button>
-                  </div>
-                  <div class="col-2 d-flex align-items-center">
-                    <button type="button" class="btn btn-secondary comment-btn">
-                      Comment
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 comment-form d-flex justify-content-center">
+              <div class="col-sm-12 d-flex justify-content-center">
                 <div class="col-1"></div>
                 <div class="col-11">
-                  <form class="form w-75">
+                  <!-- Post Comment form -->
+                  <form class="form w-75 comment-form">
                     <div class="form-group mb-2">
                       <input
                         type="text"
@@ -94,7 +106,12 @@
                         placeholder="Post"
                       />
                     </div>
-                    <button id="submit" class="btn btn-primary">Post</button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary submit-comment-btn"
+                    >
+                      Post Comment
+                    </button>
                   </form>
                 </div>
               </div>
@@ -106,19 +123,28 @@
             <h2>Create a post</h2>
           </div>
           <div class="col-12">
-            <form class="form">
+            <!-- Post form -->
+            <form class="form" id="create-post-form">
               <div class="form-group mb-2">
                 <input type="text" class="form-control" placeholder="name" />
               </div>
               <div class="form-group mb-2">
                 <input type="text" class="form-control" placeholder="Post" />
               </div>
-              <button id="submit" class="btn btn-primary">Post</button>
+              <button
+                type="submit"
+                id="post-submit"
+                class="btn btn-primary"
+                aria-label="post submit button"
+              >
+                Post
+              </button>
             </form>
           </div>
         </section>
       </article>
     </div>
+    <script type="module" src="MyClasses.js"></script>
     <script type="module" src="main.js"></script>
   </body>
 </html>
