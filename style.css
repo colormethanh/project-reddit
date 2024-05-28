@@ -1,6 +1,11 @@
+a {
+  cursor: pointer;
+}
+
 .test-border {
   border: 1px solid red;
 }
+
 .test-border-blue {
   border: 1px solid blue;
 }

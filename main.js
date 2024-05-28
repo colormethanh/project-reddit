@@ -76,13 +76,20 @@ $(document).ready(() => {
 
     const commentPostBtn = $("<button />", {
       html: `${isComment? "Reply" : "Comment"}`,
-      "class": "btn btn-secondary comment-btn"
+      "class": "btn btn-secondary comment-btn me-3"
     })
-    commentPostBtn.attr("aria-label", "Add Comment Button")
+    commentPostBtn.attr("aria-label", "Add Comment Button");
     commentPostBtn.data("for-form", formId);
-
-    postLikeBtnsContainer.appendTo(postOptions);
+    
+    const deleteBtn = $("<a />", {
+      "class": `${isComment ? "comment-delete" : "post-delete"}`,
+      html: `Delete`
+    });
+    
     commentPostBtn.appendTo(postCommentContainer);
+    deleteBtn.appendTo(postCommentContainer);
+    
+    postLikeBtnsContainer.appendTo(postOptions);
     postCommentContainer.appendTo(postOptions);
 
     return postOptions
@@ -271,7 +278,7 @@ $(document).ready(() => {
       const postElement = createPostElement(post);
       addPostToPage(postElement);
     });
-
+    console.log("Posts have been populated to DOM");
     initEventHandler();
   };
   
@@ -371,6 +378,29 @@ $(document).ready(() => {
       nameInput.value = "";
       textInput.value = "";
       populatePosts();
+    });
+
+    // Delete Post
+    $(".post-delete").on("click", (event) => {
+      const postElement = $(event.currentTarget).closest(".post");
+      const postId = $(postElement).data("postId");
+      ReReddit.deletePost(postId);
+      console.log("Post deleted");
+      populatePosts();
+    });
+
+    // Delete Comment
+    $(".comment-delete").on("click", (event) => {
+      const commentElement = $(event.currentTarget).closest(".post-parent").parent();
+      const commentId = $(commentElement).data("postId");
+      
+      const parentPostElement = $(commentElement).closest(".post");
+      const parentPostId = $(parentPostElement).data("postId");
+      const parentPost = ReReddit.getPost(parentPostId);
+
+      parentPost.deleteComment(commentId);
+      console.log("Comment deleted");
+      populatePosts(); 
     })
   };
 

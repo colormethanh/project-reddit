@@ -70,7 +70,20 @@ export class Post {
     return comment;
   };
 
+  setComments(commentsArray) {
+    this.#comments = commentsArray;
+  }
+
   getLikeCt() {return this.#likes};
+
+  deleteComment(id) {
+    const commentToDelete = this.getComment(id);
+    const newCommentArray = [];
+    this.#comments.forEach((comment) => {
+      if (comment !== commentToDelete ) return newCommentArray.push(comment);
+    });
+    this.setComments(newCommentArray);
+  }
 
   likePost(type) {
     let success = false;
@@ -86,7 +99,7 @@ export class Post {
     }
     if (success)console.log("Successfully liked comment");
     return this;
-  }
+  };
 
   createComment(author, text) {
     return new Comment(author, text, this);
@@ -98,7 +111,7 @@ export class Post {
     return comment; 
   };
 
-}
+};
 
 
 export class Comment extends Post {

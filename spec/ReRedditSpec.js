@@ -59,8 +59,7 @@ describe("SocialMedia.deletePost(id)", () =>{
   })
 
   it("posts array no longer contains posts after delete", () => {
-    debugger
-    ReReddit.deletePost(post.getId())
+    ReReddit.deletePost(post.getId());
     expect(ReReddit.getPosts().length).toEqual(0);
   })
 
@@ -95,7 +94,7 @@ describe("Post Exists", () => {
     expect(myPost.getText()).toEqual("This is a post used for testing!");
   })
 
-})
+});
 
 describe("Post.addComment(author, text)", () => {
   let myPost;
@@ -121,8 +120,7 @@ describe("Post.likePost(type)", () => {
 
   it("Decrements like count on like", () => {
     let likedPost = myPost.likePost("like");
-    debugger;
-    expect(likedPost.getLikeCt()).toEqual(1)
+    expect(likedPost.getLikeCt()).toEqual(1);
   });
 
   it("Decrements like count on dislike", () => {
@@ -133,6 +131,34 @@ describe("Post.likePost(type)", () => {
   })
 
 });
+
+describe("Post.deleteComment(id)", () =>{
+  let ReReddit;
+  let post;
+  let comment;
+  beforeEach(() => {
+    ReReddit = new SocialMedia();
+    post = ReReddit.addPost("Thanh", "This is a post used for testing!");
+    comment = post.addComment("Sophia", "This post is to be deleted")
+  });
+
+  it("Post contains the new comment in it's posts array", () => {
+    expect(post.getComments()[0]).toEqual(comment);
+  })
+
+  it("comments array no longer contains posts after delete", () => {
+    post.deleteComment(comment.getId())
+    expect(post.getComments().length).toEqual(0);
+  })
+
+  it("posts array length is reduced by one after delete", () => {
+    const newComment = ReReddit.addPost("Sophia", "Sophia made another post to test!");
+    post.deleteComment(newComment.getId());
+
+    expect(post.getComments().length).toEqual(1);
+  })
+
+})
 
 describe("Comment exist", () => {
   let myComment;
