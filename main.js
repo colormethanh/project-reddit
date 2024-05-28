@@ -163,9 +163,10 @@ $(document).ready(() => {
     const formId = uuidv4();
 
     const commentElement =  $("<div />", {
-      "class": "row justify-content-center align-items-start g-2 mb-3 post",
+      "class": "row justify-content-center align-items-start g-2 mb-3 comment",
     });
-    commentElement.data("commentId", comment.getId());
+    commentElement.data("post-type", "comment")
+    commentElement.data("post-id", comment.getId());
 
     const commentParent = $("<div />", {
       "class": "post-parent d-flex justify-content-between col-sm-12 m-0"
@@ -235,7 +236,8 @@ $(document).ready(() => {
     const postElement =  $("<div />", {
       "class": "row justify-content-center align-items-start g-2 mb-3 post",
     });
-    postElement.data("postId", post.getId());
+    postElement.data("post-type", "post");
+    postElement.data("post-id", post.getId());
 
     const postParent = $("<div />", {
       "class": "post-parent d-flex justify-content-between col-sm-12 m-0"
@@ -248,8 +250,7 @@ $(document).ready(() => {
     postContents.appendTo(postParent);
 
     const postCommentForm = createPostCommentForm(formId);
-    
-    // Todo: add comment section container here and append to post element
+  
     const commentSection = createCommentSection(post);
 
     postParent.appendTo(postElement);
@@ -268,52 +269,6 @@ $(document).ready(() => {
     return console.log("Posts have been cleared");
   };
 
-  const initEventHandler = function () {
-  // like/dislike button functionality
-  $(".like-btn").click((event) => {
-    console.log("like button clicked");
-    const type = event.currentTarget.dataset.type;
-    const postId = $(event.currentTarget).closest(".post-parent").parent().data("postId");
-    console.log(`Type is: ${type}`);
-    console.log(postId);
-  });
-
-  // Comment button functionality
-  $(".comment-btn").click((event) => {
-    console.log("comment button clicked");
-    const commentFormId = $(event.target).data("for-form");
-    const form = $(`#${commentFormId}`);
-    console.log(form);
-    form.toggleClass("hidden")
-  });
-  
-  // Submit Post functionality 
-  $("#create-post-form").on("submit", (event) => {
-    event.preventDefault();
-    const form = event.currentTarget
-    const nameInput = form.children[0].children[0]
-    const textInput = form.children[1].children[0]
-    if (nameInput.value === "" || textInput.value === "") {
-      alert("Please make sure both fields are filled out")
-      return $(nameInput).trigger("focus");
-    }
-    console.log(nameInput.value)
-    console.log(textInput.value)
-    console.log("post is submitting");
-    ReReddit.addPost(nameInput.value, textInput.value);
-    console.log("Post has submitted");
-    nameInput.value = ""
-    textInput.value = ""
-    populatePosts();
-  });
-  
-  // Submit comment functionality
-  $(".comment-form").on("submit", (event) => {
-    event.preventDefault();
-    console.log("Comment form submitted");
-  });
-  };
-
   const populatePosts = function() {
     removeAllPostElements();
 
@@ -325,6 +280,80 @@ $(document).ready(() => {
 
     initEventHandler();
   };
+  
+  const handlePostLike = function(postId, type) {
+    const post = ReReddit.getPost(postId);
+    post.likePost(type);
+  };
+
+  const handleCommentLike = function(commentId, type, parentPostId) {
+    const parentPost = ReReddit.getPost(parentPostId);
+    const comment = parentPost.getComment(commentId);
+    comment.likePost(type);
+  }
+
+  const initEventHandler = function () {
+    // like/dislike button functionality
+    $(".like-btn").click((event) => {
+      console.log("like button clicked");
+      const likeType = event.currentTarget.dataset["type"];
+      const postId = $(event.currentTarget).closest(".post-parent").parent().data("post-id");
+      const postType = $(event.currentTarget).closest(".post-parent").parent().data("post-type");
+
+      switch (postType) {
+        case "post":
+          handlePostLike(postId, likeType);
+          break;
+        case "comment":
+          
+          const parentPostId = $(event.currentTarget).closest(".post").data("post-id");
+          console.log($(event.currentTarget).closest(".post"));
+          handleCommentLike(postId, likeType, parentPostId);
+          break;
+      }
+      console.log(`Type is: ${likeType}`);
+      console.log(`Post type is: ${postType}`);
+      console.log(postId);
+      populatePosts();
+    });
+
+    // Comment button functionality
+    $(".comment-btn").click((event) => {
+      console.log("comment button clicked");
+      const commentFormId = $(event.target).data("for-form");
+      const form = $(`#${commentFormId}`);
+      console.log(form);
+      form.toggleClass("hidden")
+    });
+    
+    // Submit Post functionality 
+    $("#create-post-form").on("submit", (event) => {
+      event.preventDefault();
+      const form = event.currentTarget
+      const nameInput = form.children[0].children[0]
+      const textInput = form.children[1].children[0]
+      if (nameInput.value === "" || textInput.value === "") {
+        alert("Please make sure both fields are filled out")
+        return $(nameInput).trigger("focus");
+      }
+      console.log(nameInput.value)
+      console.log(textInput.value)
+      console.log("post is submitting");
+      ReReddit.addPost(nameInput.value, textInput.value);
+      console.log("Post has submitted");
+      nameInput.value = ""
+      textInput.value = ""
+      populatePosts();
+    });
+    
+    // Submit comment functionality
+    $(".comment-form").on("submit", (event) => {
+      event.preventDefault();
+      console.log("Comment form submitted");
+    });
+  };
+
+  
 
   const initPage = function() {
     const post1 = ReReddit.addPost("ColorMeThanh", "Gyat! this is a post used for testing.");

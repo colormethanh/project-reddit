@@ -36,7 +36,7 @@ export class SocialMedia {
     });
     this.setPost(newPostArray);
   };
-  // TODO: editPost, createPostElement, renderPostElements
+
 }
 
 export class Post {
@@ -63,19 +63,28 @@ export class Post {
 
   getComments() {return this.#comments};
 
+  getComment(id){
+    const comment = this.#comments.find((comment) => {
+      return comment.getId() === id; 
+    }) 
+    return comment;
+  };
+
   getLikeCt() {return this.#likes};
 
   likePost(type) {
-
+    let success = false;
     switch (type) {
-      case "like" :
+      case "like":
         this.#likes += 1;
+        success = true;
         break;
       case "dislike": 
         this.#likes -= 1;
+        success = true;
         break;
     }
-
+    if (success)console.log("Successfully liked comment");
     return this;
   }
 
