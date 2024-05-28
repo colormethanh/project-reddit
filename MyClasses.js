@@ -117,10 +117,10 @@ export class Comment extends Post {
   getParent() {return this.#parentPost};
 
   createCommentReply(otherCommentAuthor, reply) {
-    const replyPrefix = `@${otherCommentAuthor} `;
+    const replyPrefix = `<strong>@${this.#author}</strong> `;
 
     const replyText = replyPrefix + reply;
-    const newComment = this.#parentPost.addComment(this.#author, replyText);
+    const newComment = this.#parentPost.addComment(otherCommentAuthor, replyText);
 
     return newComment;
   };
