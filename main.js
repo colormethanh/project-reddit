@@ -312,6 +312,10 @@ $(document).ready(() => {
     console.log("Post has submitted");
   };
 
+  /**
+   * Because jquery removes event handlers when using $().empty()
+   * we have to repopulate the event handlers for the posts
+   */
   const initPostElementEventHandlers = function () {
     // like/dislike button 
     $(".like-btn").click((event) => {
