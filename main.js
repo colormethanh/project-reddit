@@ -85,6 +85,9 @@ $(document).ready(() => {
       "class": `${isComment ? "comment-delete" : "post-delete"}`,
       html: `Delete`
     });
+    deleteBtn.attr("type", "button")
+    deleteBtn.attr("data-bs-toggle", "modal");
+    deleteBtn.attr("data-bs-target", "#confirmationModal");
     
     commentPostBtn.appendTo(postCommentContainer);
     deleteBtn.appendTo(postCommentContainer);
@@ -279,7 +282,7 @@ $(document).ready(() => {
       addPostToPage(postElement);
     });
     console.log("Posts have been populated to DOM");
-    initEventHandler();
+    initPostElementEventHandlers();
   };
   
   const handlePostLike = function(postId, type) {
@@ -293,7 +296,28 @@ $(document).ready(() => {
     comment.likePost(type);
   };
 
-  const initEventHandler = function () {
+  const handleDeletePost = function(postId) {
+    ReReddit.deletePost(postId);
+    console.log("Post has been deleted");
+    populatePosts();
+  };
+
+  const handleDeleteComment = function(commentId, parentPost) {
+    parentPost.deleteComment(commentId);
+    console.log("Comment has been deleted");
+    populatePosts();
+  };
+
+  const handlePostSubmission = function(nameInput, textInput) {
+    if (nameInput.value === "" || textInput.value === "") {
+      alert("Please make sure both fields are filled out");
+      return $(nameInput).trigger("focus");
+    }
+    ReReddit.addPost(nameInput.value, textInput.value);
+    console.log("Post has submitted");
+  };
+
+  const initPostElementEventHandlers = function () {
     // like/dislike button 
     $(".like-btn").click((event) => {
       console.log("like button clicked");
@@ -320,23 +344,6 @@ $(document).ready(() => {
       const commentFormId = $(event.target).data("for-form");
       const form = $(`#${commentFormId}`);
       form.toggleClass("hidden")
-    });
-    
-    // Submit Post 
-    $("#create-post-form").on("submit", (event) => {
-      event.preventDefault();
-      const form = event.currentTarget
-      const nameInput = form.children[0].children[0]
-      const textInput = form.children[1].children[0]
-      if (nameInput.value === "" || textInput.value === "") {
-        alert("Please make sure both fields are filled out")
-        return $(nameInput).trigger("focus");
-      }
-      ReReddit.addPost(nameInput.value, textInput.value);
-      console.log("Post has submitted");
-      nameInput.value = "";
-      textInput.value = "";
-      populatePosts();
     });
     
     // Submit comment 
@@ -382,15 +389,37 @@ $(document).ready(() => {
 
     // Delete Post
     $(".post-delete").on("click", (event) => {
-      const postElement = $(event.currentTarget).closest(".post");
-      const postId = $(postElement).data("postId");
-      ReReddit.deletePost(postId);
-      console.log("Post deleted");
-      populatePosts();
+      const modal = $("#confirmationModal");
+      const modalBody = modal.find(".modal-body");
+      modalBody.empty();
+      const postId = $(event.currentTarget).closest(".post").data("postId");
+
+      const postAuthor = ReReddit.getPost(postId).getAuthor();
+      const postText = ReReddit.getPost(postId).getText();
+
+      const confirmationText = $("<p />", {
+        html: `<h3>You're about to delete...</h3>
+        <p><strong>Author:</strong> ${postAuthor}</p> <p><strong>Text:</strong> ${postText}</p>
+        <p><strong>Id:</strong> ${postId}</p>`
+      });
+      confirmationText.appendTo(modalBody);
+
+      const confirmDeleteBtn = $("#confirm-delete")
+      
+      confirmDeleteBtn.on("click", (event) => {
+        handleDeletePost(postId);
+  
+        $("#confirmationModal #modal-close").click();
+      });
+
+      console.log("post delete btn clicked");
     });
 
     // Delete Comment
     $(".comment-delete").on("click", (event) => {
+      const modal = $("#confirmationModal");
+      const modalBody = modal.find(".modal-body");
+      modalBody.empty();
       const commentElement = $(event.currentTarget).closest(".post-parent").parent();
       const commentId = $(commentElement).data("postId");
       
@@ -398,11 +427,40 @@ $(document).ready(() => {
       const parentPostId = $(parentPostElement).data("postId");
       const parentPost = ReReddit.getPost(parentPostId);
 
-      parentPost.deleteComment(commentId);
-      console.log("Comment deleted");
-      populatePosts(); 
-    })
+      const comment = parentPost.getComment(commentId)
+      
+      const commentAuthor = comment.getAuthor();
+      const commentText = comment.getText();
+      
+      const confirmationText = $("<p />", {
+        html: `<h3>You're about to delete...</h3>
+        <p><strong>Author:</strong> ${commentAuthor}</p> <p><strong>Text:</strong> ${commentText}</p>
+        <p><strong>Id:</strong> ${commentId}</p>`
+      });
+      confirmationText.appendTo(modalBody);
+
+      const confirmDeleteBtn = $("#confirm-delete")
+      
+      confirmDeleteBtn.on("click", (event) => {
+        handleDeleteComment(commentId, parentPost);
+  
+        $("#confirmationModal #modal-close").click();
+      });
+
+    });
   };
+
+  // Submit Post Event Handler
+  $("#create-post-form").on("submit", (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const nameInput = form.children[0].children[0];
+    const textInput = form.children[1].children[0];
+    handlePostSubmission(nameInput, textInput);
+    populatePosts();
+    nameInput.value = "";
+    textInput.value = "";
+  });
 
   const initPage = function() {
     const post1 = ReReddit.addPost("ColorMeThanh", "Gyat! this is a post used for testing.");
