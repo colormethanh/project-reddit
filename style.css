@@ -2,16 +2,14 @@ a {
   cursor: pointer;
 }
 
-.test-border {
-  border: 1px solid red;
+body {
+  background-color: #121212;
+  color: white;
 }
 
-.test-border-blue {
-  border: 1px solid blue;
-}
-
-.test-box {
-  height: 10rem;
+#posts {
+  background-color: #262436;
+  border-radius: 10px;
 }
 
 #posts {

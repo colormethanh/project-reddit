@@ -1,6 +1,6 @@
-console.log("let's code!")
 import {SocialMedia} from "../MyClasses.js";
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
+
 let ReReddit;
 
 $(document).ready(() => {
@@ -9,7 +9,7 @@ $(document).ready(() => {
 
   const createPostIconSection = function() {
     const postIconSection = $("<div />", {
-      "class": "post-icon-container d-flex flex-column"
+      "class": "post-icon-container d-flex flex-column me-2"
     });
 
     const postIcon = $("<i />", {
@@ -28,7 +28,7 @@ $(document).ready(() => {
 
   const createPostOptionsRow = function(likeCt, formId, isComment = false) {
     const postOptions = $("<div />", {
-      "class": "row post-options justify-content-between",
+      "class": "row post-options justify-content-start",
     });
 
     const postLikeBtnsContainer = $("<div />", {
@@ -120,16 +120,45 @@ $(document).ready(() => {
     postOptions.appendTo(postContents);
     return postContents;
   };
+  
+  const createPostElement = function(post) {
+    const postAuthor = post.getAuthor();
+    const postText = post.getText();
+    const likeCt = post.getLikeCt();
+    const formId = uuidv4();
+    
+    const postElement =  $("<div />", {
+      "class": "row justify-content-center align-items-start g-2 mb-3 post",
+    });
+    postElement.data("post-type", "post");
+    postElement.data("post-id", post.getId());
+
+    const postParent = $("<div />", {
+      "class": "post-parent d-flex justify-content-start col-sm-12 m-0"
+    });
+
+    const postIconSection = createPostIconSection();
+    postIconSection.appendTo(postParent);
+    
+    const postContents = createPostContentsSection(postAuthor, postText, likeCt, formId);
+    postContents.appendTo(postParent);
+
+    const postCommentForm = createPostCommentForm(formId);
+  
+    const commentSection = createCommentSection(post);
+
+    postParent.appendTo(postElement);
+    postCommentForm.appendTo(postElement);
+    commentSection.appendTo(postElement);
+    
+    return postElement;
+  };
 
   const createPostCommentForm = function(formId, isCommentReplyForm = false) {
     const commentFormContainer = $("<div />", {
       "class": "col-sm-12 d-flex justify-content-center comment-form-container hidden"
     });
     commentFormContainer.attr("id", formId);
-
-    const separatorColumn = $("<div />", {
-      "class": "col-1"
-    })
 
     const formColumn = $("<div />", {
       "class": "col-11"
@@ -160,7 +189,6 @@ $(document).ready(() => {
     
     form.appendTo(formColumn);
 
-    separatorColumn.appendTo(commentFormContainer);
     formColumn.appendTo(commentFormContainer);
 
     return commentFormContainer;
@@ -179,7 +207,7 @@ $(document).ready(() => {
     commentElement.data("post-id", comment.getId());
 
     const commentParent = $("<div />", {
-      "class": "post-parent d-flex justify-content-between col-sm-12 m-0"
+      "class": "post-parent d-flex justify-content-start col-sm-12 m-0"
     });
 
     const postIconSection = createPostIconSection();
@@ -230,39 +258,6 @@ $(document).ready(() => {
 
     return commentSectionContainer;
   }
-
-  const createPostElement = function(post) {
-    const postAuthor = post.getAuthor();
-    const postText = post.getText();
-    const likeCt = post.getLikeCt();
-    const formId = uuidv4();
-    
-    const postElement =  $("<div />", {
-      "class": "row justify-content-center align-items-start g-2 mb-3 post",
-    });
-    postElement.data("post-type", "post");
-    postElement.data("post-id", post.getId());
-
-    const postParent = $("<div />", {
-      "class": "post-parent d-flex justify-content-between col-sm-12 m-0"
-    });
-
-    const postIconSection = createPostIconSection();
-    postIconSection.appendTo(postParent);
-    
-    const postContents = createPostContentsSection(postAuthor, postText, likeCt, formId);
-    postContents.appendTo(postParent);
-
-    const postCommentForm = createPostCommentForm(formId);
-  
-    const commentSection = createCommentSection(post);
-
-    postParent.appendTo(postElement);
-    postCommentForm.appendTo(postElement);
-    commentSection.appendTo(postElement);
-    
-    return postElement;
-  };
 
   const addPostToPage = function(element) {
     element.appendTo("#posts-inner");
@@ -462,6 +457,7 @@ $(document).ready(() => {
     textInput.value = "";
   });
 
+  // Pre-populate posts container with posts
   const initPage = function() {
     const post1 = ReReddit.addPost("ColorMeThanh", "Gyat! this is a post used for testing.");
     const post2 = ReReddit.addPost("Sophia", "This is sophia writing a post for testing as well.");
@@ -470,5 +466,4 @@ $(document).ready(() => {
     populatePosts();
   };
   initPage();
-  
 })

@@ -1,5 +1,18 @@
 import {SocialMedia, Post, Comment} from "../MyClasses.js";
 
+describe("Social media exists", () => {
+  let ReReddit;
+
+  beforeEach(() => {
+    ReReddit = new SocialMedia();
+  });
+
+  it("Is of type object", () => {
+    expect(typeof(ReReddit)).toEqual("object");
+  });
+
+})
+
 describe("SocialMedia.getPost(id)", () => {
   let ReReddit;
 
@@ -32,19 +45,6 @@ describe("SocialMedia.addPost()", () => {
     expect(ReReddit.getPosts()[0]).toEqual(myPost);
   });
 });
-
-describe("Social media exists", () => {
-  let ReReddit;
-
-  beforeEach(() => {
-    ReReddit = new SocialMedia();
-  });
-
-  it("Is of type object", () => {
-    expect(typeof(ReReddit)).toEqual("object");
-  });
-
-})
 
 describe("SocialMedia.deletePost(id)", () =>{
   let ReReddit;

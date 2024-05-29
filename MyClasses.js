@@ -113,7 +113,6 @@ export class Post {
 
 };
 
-
 export class Comment extends Post {
   #author;
   #text;
