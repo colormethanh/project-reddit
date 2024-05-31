@@ -1,9 +1,9 @@
-import {SocialMedia} from "../MyClasses.js";
+import {SocialMedia} from "./MyClasses.js";
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 
 let ReReddit;
 
-$(document).ready(() => {
+$(function() {
   console.log("Document Ready");
   ReReddit = new SocialMedia();
 
