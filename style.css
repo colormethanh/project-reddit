@@ -7,6 +7,10 @@ body {
   color: white;
 }
 
+.modal {
+  color: black;
+}
+
 #posts {
   background-color: #262436;
   border-radius: 10px;

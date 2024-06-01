@@ -1,7 +1,7 @@
 import {SocialMedia} from "./MyClasses.js";
 let ReReddit;
 
-$(document).ready(() => {
+$(function() {
   console.log("Document Ready");
   ReReddit = new SocialMedia();
 
@@ -393,7 +393,6 @@ $(document).ready(() => {
 
       const postAuthor = ReReddit.getPost(postId).getAuthor();
       const postText = ReReddit.getPost(postId).getText();
-
       const confirmationText = $("<p />", {
         html: `<h3>You're about to delete...</h3>
         <p><strong>Author:</strong> ${postAuthor}</p> <p><strong>Text:</strong> ${postText}</p>
