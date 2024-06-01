@@ -1,7 +1,7 @@
 import {SocialMedia} from "./MyClasses.js";
 let ReReddit;
 
-$(function() {
+$(document).ready(function() {
   console.log("Document Ready");
   ReReddit = new SocialMedia();
 
@@ -123,7 +123,7 @@ $(function() {
     const postAuthor = post.getAuthor();
     const postText = post.getText();
     const likeCt = post.getLikeCt();
-    const formId = Date.now() + Math.random();
+    const formId = new Date().getTime() + Math.random();
     
     const postElement =  $("<div />", {
       "class": "row justify-content-center align-items-start g-2 mb-3 post",
@@ -196,7 +196,7 @@ $(function() {
     const commentAuthor = comment.getAuthor();
     const commentText = comment.getText();
     const likeCt = comment.getLikeCt();
-    const formId = Date.now() + Math.random();
+    const formId = new Date().getTime() + Math.random();;
 
     const commentElement =  $("<div />", {
       "class": "row justify-content-center align-items-start g-2 mb-3 comment",
@@ -338,9 +338,15 @@ $(function() {
     // Comment form toggle button 
     $(".comment-btn").click((event) => {
       console.log("comment button clicked");
+      // debugger;
       const commentFormId = $(event.target).data("for-form");
-      const form = $(`#${commentFormId}`);
-      form.toggleClass("hidden")
+      // const form = $(`#${commentFormId}`);
+      const formArray = $(event.target).closest(".post").find(".comment-form-container")
+      const correspondingForm = formArray.toArray().find((itm) => {
+        return itm.id == commentFormId
+      })
+      
+      $(correspondingForm).toggleClass("hidden")
     });
     
     // Submit comment 
@@ -467,4 +473,4 @@ $(function() {
     populatePosts();
   };
   initPage();
-})
+});
