@@ -48,7 +48,7 @@ export class Post {
     this.#text = text;
     this.#comments = [];
     this.#likes = 0;
-    this.#id = new Date().getTime() + Math.random();;
+    this.#id = new Date().getTime() + Math.random();
   }
 
   getId() {return this.#id};
