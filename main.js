@@ -1,6 +1,4 @@
-import {SocialMedia} from "../MyClasses.js";
-import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
-
+import {SocialMedia} from "./MyClasses.js";
 let ReReddit;
 
 $(document).ready(() => {
@@ -125,7 +123,7 @@ $(document).ready(() => {
     const postAuthor = post.getAuthor();
     const postText = post.getText();
     const likeCt = post.getLikeCt();
-    const formId = uuidv4();
+    const formId = Date.now() + Math.random();
     
     const postElement =  $("<div />", {
       "class": "row justify-content-center align-items-start g-2 mb-3 post",
@@ -198,7 +196,7 @@ $(document).ready(() => {
     const commentAuthor = comment.getAuthor();
     const commentText = comment.getText();
     const likeCt = comment.getLikeCt();
-    const formId = uuidv4();
+    const formId = Date.now() + Math.random();
 
     const commentElement =  $("<div />", {
       "class": "row justify-content-center align-items-start g-2 mb-3 comment",

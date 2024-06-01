@@ -1,6 +1,4 @@
 
-import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
-
 export class SocialMedia {
   #posts;
   constructor() {
@@ -50,7 +48,7 @@ export class Post {
     this.#text = text;
     this.#comments = [];
     this.#likes = 0;
-    this.#id = uuidv4();
+    this.#id = Date.now() + Math.random();
   }
 
   getId() {return this.#id};
@@ -137,6 +135,7 @@ export class Comment extends Post {
     return newComment;
   };
 }
+
 
 
 
