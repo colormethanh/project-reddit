@@ -4,6 +4,18 @@ This project has been created by a student at Parsity, an online software engine
 
 If you have any questions about this project or the program in general, visit [parsity.io](https://parsity.io/) or email hello@parsity.io.
 
+## How to run
+
+To run this project please use a web server to run this.
+
+1. Download the Live Server Extension from VSCode
+![LiveServer](./static/Live%20server.png)
+2. Open index.html
+3. At the bottom of your page on the right, click the "Go live" button. Alternatively you can also right click and select "start live server" as well
+![StartLiveServer](./static/goliveBtn.png)
+![StartLiveServerAlt](./static/startLiveServer.png)
+4. The app should open up in your most recent browser
+
 ## What is it?
 
 A rendition of the popular social media website "reddit".
